@@ -1,0 +1,17 @@
+{
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "editor.formatOnSave": true,
+  "eslint.useESLintClass": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": [
+    "source.addMissingImports",
+    "source.fixAll.eslint"
+  ],
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "cSpell.words": ["clsx", "lucide", "tailwindcss"],
+  "tailwindCSS.experimental.classRegex": [
+    ["ctl\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ]
+}
