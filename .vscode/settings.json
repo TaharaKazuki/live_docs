@@ -10,7 +10,14 @@
   "editor.quickSuggestions": {
     "strings": "on"
   },
-  "cSpell.words": ["clsx", "liveblocks", "lucide", "tailwindcss"],
+  "cSpell.words": [
+    "clsx",
+    "liveblocks",
+    "lucide",
+    "nextjs",
+    "tailwindcss",
+    "trpc"
+  ],
   "tailwindCSS.experimental.classRegex": [
     ["ctl\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
   ]

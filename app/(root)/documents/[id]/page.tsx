@@ -1,3 +1,4 @@
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import React from 'react';
 
 import { Editor } from '@/components/editor/Editor';
@@ -10,6 +11,12 @@ const Document = () => {
         <div className="flex w-fit items-center justify-center gap-2">
           <p className="document-title">Sample Title</p>
         </div>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
       </Header>
       <Editor />
     </div>
