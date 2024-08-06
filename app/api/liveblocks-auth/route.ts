@@ -2,8 +2,9 @@ import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
 import { liveblocks } from '@/lib/liveblocks';
+import { getUserColor } from '@/lib/utils';
 
-export async function POST(request: Request) {
+export async function POST(_request: Request) {
   const clerkUser = await currentUser();
 
   if (!clerkUser) redirect('/sign-in');
@@ -18,16 +19,16 @@ export async function POST(request: Request) {
       name: `${firstName} ${lastName}`,
       email: emailAddresses[0].emailAddress,
       avatar: imageUrl,
-      color: '',
+      color: getUserColor(id),
     },
   };
   // Identify the user and return the result
   const { status, body } = await liveblocks.identifyUser(
     {
-      userId: user.id,
-      groupIds, // Optional
+      userId: user.info.email,
+      groupIds: [],
     },
-    { userInfo: user.metadata }
+    { userInfo: user.info }
   );
 
   return new Response(body, { status });
