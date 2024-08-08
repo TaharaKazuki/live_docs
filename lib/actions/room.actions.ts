@@ -33,7 +33,7 @@ export const createDocument = async ({
 
     return parseStringify(room);
   } catch (error) {
-    console.info(`Error happened while creating a root: ${error}`);
+    console.log(`Error happened while creating a room: ${error}`);
   }
 };
 
@@ -55,7 +55,7 @@ export const getDocument = async ({
 
     return parseStringify(room);
   } catch (error) {
-    console.info(`Error happened while getting a room: ${error}`);
+    console.log(`Error happened while getting a room: ${error}`);
   }
 };
 
@@ -66,10 +66,10 @@ export const updateDocument = async (roomId: string, title: string) => {
         title,
       },
     });
-    revalidatePath(`document/${roomId}`);
+    revalidatePath(`/documents/${roomId}`);
     return parseStringify(updatedRoom);
   } catch (error) {
-    console.info(`Error happened while updating a room ${error}`);
+    console.log(`Error happened while updating a room: ${error}`);
   }
 };
 
@@ -78,6 +78,6 @@ export const getDocuments = async (email: string) => {
     const rooms = await liveblocks.getRooms({ userId: email });
     return parseStringify(rooms);
   } catch (error) {
-    console.info(`Error happened while getting a rooms: ${error}`);
+    console.log(`Error happened while getting rooms: ${error}`);
   }
 };
