@@ -16,8 +16,8 @@ const Document = async ({ params: { id } }: SearchParamProps) => {
 
   if (!room) redirect('/');
 
-  const userIds = Object.keys(room.userAccesses);
-  const users = await getClerkUsers({ userIds });
+  // const userIds = Object.keys(room.userAccesses);
+  // const users = await getClerkUsers({ userIds });
 
   return (
     <main className="flex w-full flex-col items-center">
