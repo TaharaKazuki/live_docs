@@ -3,10 +3,12 @@
 import { SignedOut, SignInButton, SignedIn, UserButton } from '@clerk/nextjs';
 import { RoomProvider, ClientSideSuspense } from '@liveblocks/react/suspense';
 import Image from 'next/image';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
+import ActiveCollaborators from './ActiveCollaborators';
 import { Editor } from './editor/Editor';
 import Header from './Header';
+import Loader from './Loader';
 import { Input } from '@/components/ui/input';
 
 const CollaborativeRoom = ({
@@ -24,11 +26,27 @@ const CollaborativeRoom = ({
   const inputRef = useRef<HTMLDivElement>(null);
 
   const currentUserType = 'editor';
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setEditing(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const updateTitleHandler = () => {};
 
   return (
     <RoomProvider id={roomId}>
-      <ClientSideSuspense fallback={<div>Loading...</div>}>
+      <ClientSideSuspense fallback={<Loader />}>
         <div className="collaborative-room">
           <Header>
             <div
@@ -69,12 +87,16 @@ const CollaborativeRoom = ({
 
               {loading && <p className="text-sm text-gray-400">saving...</p>}
             </div>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
+            <div className="flex w-full flex-1 justify-end gap-2 sm:gap-3">
+              <ActiveCollaborators />
+
+              <SignedOut>
+                <SignInButton />
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </div>
           </Header>
           <Editor />
         </div>
