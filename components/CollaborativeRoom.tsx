@@ -1,5 +1,6 @@
 'use client';
 
+import type { KeyboardEvent } from 'react';
 import { SignedOut, SignInButton, SignedIn, UserButton } from '@clerk/nextjs';
 import { RoomProvider, ClientSideSuspense } from '@liveblocks/react/suspense';
 import Image from 'next/image';
@@ -10,12 +11,14 @@ import { Editor } from './editor/Editor';
 import Header from './Header';
 import Loader from './Loader';
 import { Input } from '@/components/ui/input';
+import { updateDocument } from '@/lib/actions/room.actions';
 
 const CollaborativeRoom = ({
   roomId,
   roomMetadata,
 }: CollaborativeRoomProps) => {
-  console.info('roomemeta', roomMetadata);
+  const currentUserType = 'editor';
+
   const [documentTitle, setDocumentTitle] = useState<string>(
     roomMetadata.title
   );
@@ -25,7 +28,21 @@ const CollaborativeRoom = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);
 
-  const currentUserType = 'editor';
+  const updateTitleHandler = async (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setLoading(true);
+
+      try {
+        if (documentTitle !== roomMetadata.title) {
+          const updatedDocument = await updateDocument(roomId, documentTitle);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -34,15 +51,22 @@ const CollaborativeRoom = ({
         !containerRef.current.contains(e.target as Node)
       ) {
         setEditing(false);
+        updateDocument(roomId, documentTitle);
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [roomId, documentTitle]);
 
-  const updateTitleHandler = () => {};
+  useEffect(() => {
+    if (editing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [editing]);
 
   return (
     <RoomProvider id={roomId}>
