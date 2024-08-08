@@ -7,7 +7,10 @@ import React from 'react';
 import { Editor } from './editor/Editor';
 import Header from './Header';
 
-const CollaborativeRoom = () => {
+const CollaborativeRoom = ({
+  roomId,
+  roomMetadata,
+}: CollaborativeRoomProps) => {
   return (
     <RoomProvider id="my-room">
       <ClientSideSuspense fallback={<div>Loading...</div>}>
